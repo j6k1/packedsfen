@@ -3,6 +3,7 @@ use usiagent::event::GameEndState;
 
 use super::super::error::*;
 use super::super::traits;
+use super::reader::BeseMove;
 
 #[derive(PartialEq, Eq, Clone)]
 pub struct HuffmanCode {
@@ -126,7 +127,7 @@ pub struct PackedSfenWithExtended {
 #[repr(C)]
 pub struct ExtendFields {
     pub value: i16,
-    pub best_move16: u16,
+    pub best_move: BeseMove,
     pub end_ply: u16,
     pub game_result: GameEndState,
     pub padding: u8,

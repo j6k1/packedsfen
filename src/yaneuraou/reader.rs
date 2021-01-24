@@ -9,6 +9,74 @@ use crate::yaneuraou::haffman_code::{HuffmanCode, PackedSfenWithExtended, Packed
 use crate::traits::TryFrom;
 use std::collections::HashMap;
 
+const MOVE_NONE:u16 = 0;
+const MOVE_NULL:u16 = (1 << 7) + 1;
+const MOVE_RESIGN:u16 = (1 << 7) + 2;
+const MOVE_WIN:u16 = (1 << 7) + 3;
+
+const MOVE_DROP:u16 = 1 << 14;
+const MOVE_PROMOTE:u16 = 1 << 15;
+
+const MOCHIGOMA_MAP:[MochigomaKind; 7] = [
+    MochigomaKind::Fu,
+    MochigomaKind::Kyou,
+    MochigomaKind::Kei,
+    MochigomaKind::Gin,
+    MochigomaKind::Kaku,
+    MochigomaKind::Hisha,
+    MochigomaKind::Kin
+];
+
+pub enum BeseMove {
+    None,
+    Null,
+    Resign,
+    Win,
+    MoveTo(u32,u32,u32,u32,bool),
+    MovePut(MochigomaKind,u32,u32)
+}
+impl traits::TryFrom<u16> for BeseMove {
+    type Error = ReadError;
+    fn try_from(value: u16) -> Result<BeseMove,ReadError> {
+        Ok(match value {
+            MOVE_NONE => BeseMove::None,
+            MOVE_NULL => BeseMove::Null,
+            MOVE_RESIGN => BeseMove::Resign,
+            MOVE_WIN => BeseMove::Win,
+            v => {
+                if v & MOVE_DROP != 0 {
+                    let index = (v >> 7) & 0x7f;
+
+                    if index < 1 || index > 7 {
+                        return Err(ReadError::InvalidFormat(String::from("piece kind is invalid.")))
+                    }
+
+                    let kind = MOCHIGOMA_MAP[index as usize - 1];
+
+                    let sq = v & 0x7f;
+
+                    let y = sq / 9;
+                    let x = sq - 9 * y;
+
+                    BeseMove::MovePut(kind,x as u32, y as u32)
+                } else {
+                    let n = v & MOVE_PROMOTE != 0;
+
+                    let sq = (v >> 7) & 0x7f;
+                    let sy = sq / 9;
+                    let sx = sq - 9 * sy;
+
+                    let sq = v & 0x7f;
+
+                    let dy = sq / 9;
+                    let dx = sq - 9 * dy;
+
+                    BeseMove::MoveTo(sx as u32, sy as u32, dx as u32, dy as u32, n)
+                }
+            }
+        })
+    }
+}
 pub struct PackedSfenReader {
 }
 impl<'a> PackedSfenReader {
@@ -198,7 +266,7 @@ impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
 
         Ok((gamestate,ExtendFields {
             value: raw_packed_sfen_with_extended.value,
-            best_move16: raw_packed_sfen_with_extended.best_move16,
+            best_move: BeseMove::try_from(raw_packed_sfen_with_extended.best_move16)?,
             end_ply: raw_packed_sfen_with_extended.end_ply,
             game_result:  game_result,
             padding: 0
