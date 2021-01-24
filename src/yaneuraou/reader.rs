@@ -178,7 +178,7 @@ impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
 
                         match hc.defined() {
                             Ok(true) => {
-                                let nari = if hc == HuffmanCode::KIN || bs.get_bit_from_lsb()? == 1 {
+                                let nari = if hc != HuffmanCode::KIN && bs.get_bit_from_lsb()? == 1 {
                                     true
                                 } else {
                                     false
