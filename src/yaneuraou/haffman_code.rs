@@ -11,49 +11,52 @@ pub struct HuffmanCode {
 }
 
 impl HuffmanCode {
-    const BLANK: HuffmanCode = HuffmanCode{ value: 0b0, bit_length: 1 };
-    const FU: HuffmanCode = HuffmanCode{ value: 0b1, bit_length: 2 };
-    const KYOU: HuffmanCode = HuffmanCode{ value: 0b11, bit_length: 4 };
-    const KEI: HuffmanCode = HuffmanCode{ value: 0b1011, bit_length: 4 };
-    const GIN: HuffmanCode = HuffmanCode{ value: 0b111, bit_length: 4 };
-    const KAKU: HuffmanCode = HuffmanCode{ value: 0b1_1111, bit_length: 6 };
-    const HISHA: HuffmanCode = HuffmanCode{ value: 0b11_1111, bit_length: 6 };
-    const KIN: HuffmanCode = HuffmanCode{ value: 0b1111, bit_length: 5 };
+    pub const BLANK: HuffmanCode = HuffmanCode{ value: 0b0, bit_length: 1 };
+    pub const FU: HuffmanCode = HuffmanCode{ value: 0b1, bit_length: 2 };
+    pub const KYOU: HuffmanCode = HuffmanCode{ value: 0b11, bit_length: 4 };
+    pub const KEI: HuffmanCode = HuffmanCode{ value: 0b1011, bit_length: 4 };
+    pub const GIN: HuffmanCode = HuffmanCode{ value: 0b111, bit_length: 4 };
+    pub const KAKU: HuffmanCode = HuffmanCode{ value: 0b1_1111, bit_length: 6 };
+    pub const HISHA: HuffmanCode = HuffmanCode{ value: 0b11_1111, bit_length: 6 };
+    pub const KIN: HuffmanCode = HuffmanCode{ value: 0b1111, bit_length: 5 };
     const MAX_BIT_LENGTH_ON_BANMEN: u8 = 6;
+
+    pub const M_FU: HuffmanCode = HuffmanCode{ value: 0b0, bit_length: 1 };
+    pub const M_KYOU: HuffmanCode = HuffmanCode{ value: 0b1, bit_length: 3 };
+    pub const M_KEI: HuffmanCode = HuffmanCode{ value: 0b101, bit_length: 3 };
+    pub const M_GIN: HuffmanCode = HuffmanCode{ value: 0b11, bit_length: 3 };
+    pub const M_KAKU: HuffmanCode = HuffmanCode{ value: 0b1_111, bit_length: 5 };
+    pub const M_HISHA: HuffmanCode = HuffmanCode{ value: 0b11_111, bit_length: 5 };
+    pub const M_KIN: HuffmanCode = HuffmanCode{ value: 0b111, bit_length: 4 };
     const MAX_BIT_LENGTH_IN_MOCHIGOMA: u8 = 5;
 
-    pub fn defined(hc:&HuffmanCode) -> Result<HuffmanCode,ReadError> {
-        match *hc {
+    pub fn defined(&self) -> Result<bool,ReadError> {
+        match *self {
             HuffmanCode::BLANK | HuffmanCode::FU | HuffmanCode::KYOU |
             HuffmanCode::KEI | HuffmanCode::GIN | HuffmanCode::KAKU |
             HuffmanCode::HISHA | HuffmanCode::KIN => {
-                Ok(hc.clone())
+                Ok(true)
             },
             HuffmanCode {
                 bit_length: HuffmanCode::MAX_BIT_LENGTH_ON_BANMEN..=std::u8::MAX,
                 ..
             } => Err(ReadError::OverMaxBitLength),
-            _ => Err(ReadError::Undefined)
+            _ => Ok(false)
         }
     }
 
-    pub fn defined_mochigoma(hc:&HuffmanCode) -> Result<HuffmanCode,ReadError> {
-        let mut hc = hc.clone();
-
-        hc.value = hc.value >> 1;
-        hc.bit_length -= 1;
-
-        match hc {
-            HuffmanCode::BLANK | HuffmanCode::FU | HuffmanCode::KYOU |
-            HuffmanCode::KEI | HuffmanCode::GIN | HuffmanCode::KAKU |
-            HuffmanCode::HISHA | HuffmanCode::KIN => {
-                Ok(hc)
+    pub fn defined_mochigoma(&self) -> Result<bool,ReadError> {
+        match *self {
+            HuffmanCode::M_FU | HuffmanCode::M_KYOU |
+            HuffmanCode::M_KEI | HuffmanCode::M_GIN | HuffmanCode::M_KAKU |
+            HuffmanCode::M_HISHA | HuffmanCode::M_KIN => {
+                Ok(true)
             },
             HuffmanCode {
-                bit_length: HuffmanCode::MAX_BIT_LENGTH_ON_BANMEN..=std::u8::MAX,
+                bit_length: HuffmanCode::MAX_BIT_LENGTH_IN_MOCHIGOMA..=std::u8::MAX,
                 ..
             } => Err(ReadError::OverMaxBitLength),
-            _ => Err(ReadError::Undefined)
+            _ => Ok(false)
         }
     }
 }
@@ -97,26 +100,34 @@ impl traits::TryFrom<&HuffmanCode> for MochigomaKind {
     type Error = ReadError;
     fn try_from(hc:&HuffmanCode) -> Result<MochigomaKind, Self::Error> {
         match *hc {
-            HuffmanCode::FU => Ok(MochigomaKind::Fu),
-            HuffmanCode::KYOU => Ok(MochigomaKind::Kyou),
-            HuffmanCode::KEI => Ok(MochigomaKind::Kei),
-            HuffmanCode::GIN => Ok(MochigomaKind::Gin),
-            HuffmanCode::KAKU => Ok(MochigomaKind::Kaku),
-            HuffmanCode::HISHA => Ok(MochigomaKind::Hisha),
-            HuffmanCode::KIN => Ok(MochigomaKind::Kin),
+            HuffmanCode::M_FU => Ok(MochigomaKind::Fu),
+            HuffmanCode::M_KYOU => Ok(MochigomaKind::Kyou),
+            HuffmanCode::M_KEI => Ok(MochigomaKind::Kei),
+            HuffmanCode::M_GIN => Ok(MochigomaKind::Gin),
+            HuffmanCode::M_KAKU => Ok(MochigomaKind::Kaku),
+            HuffmanCode::M_HISHA => Ok(MochigomaKind::Hisha),
+            HuffmanCode::M_KIN => Ok(MochigomaKind::Kin),
             _ => Err(ReadError::Undefined)
         }
     }
 }
 pub struct PackedSfen {
-    buf: [u8; 32]
+    pub buf: [u8; 32]
 }
 #[repr(C)]
 pub struct PackedSfenWithExtended {
     pub packed: PackedSfen,
     pub value: i16,
     pub best_move16: u16,
-    pub end_ply: i16,
+    pub end_ply: u16,
+    pub game_result: i8,
+    pub padding: u8,
+}
+#[repr(C)]
+pub struct ExtendFields {
+    pub value: i16,
+    pub best_move16: u16,
+    pub end_ply: u16,
     pub game_result: GameEndState,
     pub padding: u8,
 }

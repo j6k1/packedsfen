@@ -38,4 +38,17 @@ impl<'a> BitStreamReader<'a> {
             Ok(bit)
         }
     }
+
+    pub fn get_bits_from_lsb(&mut self, size:usize) -> Result<u8,ReadError> {
+        let mut bits = 0;
+
+        for i in 0..size {
+            bits |= self.get_bit_from_lsb()? << i;
+        }
+        Ok(bits)
+    }
+
+    pub fn get_cursor(&self) -> usize {
+        self.current_index * 8 + self.current_bits
+    }
 }
