@@ -99,22 +99,19 @@ impl PackedSfenReader {
 
             let remained = buf.split_off(2);
 
-            let mut score_value:i16 = buf[0] as i16;
-            score_value = score_value << 8 | buf[1] as i16;
+            let score_value:i16 = buf[0] as i16 | (buf[1] as i16) << 8;
 
             let mut buf = remained;
 
             let remained = buf.split_off(2);
 
-            let mut best_move16 = buf[0] as u16;
-            best_move16 = best_move16 << 8 | buf[1] as u16;
+            let best_move16 = buf[0] as u16 | (buf[1] as u16) << 8;
 
             let mut buf = remained;
 
             let remained = buf.split_off(2);
 
-            let mut end_play = buf[0] as u16;
-            end_play = end_play << 8 | buf[1] as u16;
+            let end_play = buf[0] as u16 | (buf[1] as u16) << 8;
 
             let mut buf = remained;
 
