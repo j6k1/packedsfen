@@ -170,6 +170,10 @@ impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
 
             for y in 0..9 {
                 for x in 0..9 {
+                    if banmen.0[y][x] == KomaKind::SOu || banmen.0[y][x] == KomaKind::GOu {
+                        continue;
+                    }
+
                     let mut hc = HuffmanCode { value: 0, bit_length: 0 };
 
                     loop {
@@ -177,14 +181,6 @@ impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
                         hc.bit_length += 1;
 
                         match hc.defined() {
-                            Ok(true) if hc == HuffmanCode::BLANK => {
-                                if banmen.0[y][x] == KomaKind::SOu || banmen.0[y][x] == KomaKind::GOu {
-                                    break;
-                                } else {
-                                    banmen.0[y][x] = KomaKind::Blank;
-                                    break;
-                                }
-                            },
                             Ok(true) => {
                                 let nari = if hc != HuffmanCode::KIN && bs.get_bit_from_lsb()? == 1 {
                                     true
