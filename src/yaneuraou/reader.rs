@@ -268,8 +268,7 @@ impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
             value: raw_packed_sfen_with_extended.value,
             best_move: BeseMove::try_from(raw_packed_sfen_with_extended.best_move16)?,
             end_ply: raw_packed_sfen_with_extended.end_ply,
-            game_result:  game_result,
-            padding: 0
+            game_result:  game_result
         }))
     }
 }

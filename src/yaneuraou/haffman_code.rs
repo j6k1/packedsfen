@@ -130,5 +130,4 @@ pub struct ExtendFields {
     pub best_move: BeseMove,
     pub end_ply: u16,
     pub game_result: GameEndState,
-    pub padding: u8,
 }
