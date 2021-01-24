@@ -79,7 +79,7 @@ impl traits::TryFrom<u16> for BeseMove {
 }
 pub struct PackedSfenReader {
 }
-impl<'a> PackedSfenReader {
+impl PackedSfenReader {
     pub fn new() -> PackedSfenReader {
         PackedSfenReader {
         }
@@ -177,6 +177,14 @@ impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
                         hc.bit_length += 1;
 
                         match hc.defined() {
+                            Ok(true) if hc == HuffmanCode::BLANK => {
+                                if banmen.0[y][x] == KomaKind::SOu || banmen.0[y][x] == KomaKind::GOu {
+                                    break;
+                                } else {
+                                    banmen.0[y][x] = KomaKind::Blank;
+                                    break;
+                                }
+                            },
                             Ok(true) => {
                                 let nari = if hc != HuffmanCode::KIN && bs.get_bit_from_lsb()? == 1 {
                                     true
