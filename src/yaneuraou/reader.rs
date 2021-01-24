@@ -50,7 +50,7 @@ impl<'a> PackedSfenReader {
 
             let mut buf = remained;
 
-            let _ = buf.split_off(2);
+            let _ = buf.split_off(1);
 
             let game_result:i8 = buf[0] as i8;
 
