@@ -178,6 +178,13 @@ impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
                         hc.bit_length += 1;
 
                         match hc.defined() {
+                            Ok(true) if hc == HuffmanCode::BLANK => {
+                                let kind = KomaKind::Blank;
+
+                                banmen.0[y][x] = kind;
+
+                                break;
+                            },
                             Ok(true) => {
                                 let nari = if hc != HuffmanCode::KIN && bs.get_bit_from_lsb()? == 1 {
                                     true
