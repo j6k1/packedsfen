@@ -160,9 +160,9 @@ fn test_read_sfen_teban_sente_mochigoma_half() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,Banmen([
-        [GKyouN, GKeiN, GGinN, GKin, GOu, GKin, GGin, GKei, GKyou],
-        [Blank, GHishaN, Blank, Blank, Blank, Blank, Blank, GKakuN, Blank],
-        [GFuN, GFu, GFu, GFu, GFu, GFu, GFu, GFu, GFu],
+        [GKyou, GKei, GGin, GKin, GOu, GKin, GGin, GKei, GKyou],
+        [Blank, GHisha, Blank, Blank, Blank, Blank, Blank, GKaku, Blank],
+        [GFu, GFu, GFu, GFu, GFu, GFu, GFu, GFu, GFu],
         [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
         [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
         [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],

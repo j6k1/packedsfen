@@ -222,9 +222,10 @@ impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
                 loop {
                     hc.value |= bs.get_bit_from_lsb()? << hc.bit_length;
                     hc.bit_length += 1;
+
                     match hc.defined_mochigoma() {
                         Ok(true) => {
-                            if hc != HuffmanCode::KIN {
+                            if hc != HuffmanCode::M_KIN {
                                 let _ = bs.get_bit_from_lsb()?;
                             }
 
@@ -245,6 +246,7 @@ impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
 
                                 mg.insert(kind,c+1);
                             }
+                            break;
                         },
                         Ok(false) => (),
                         Err(e) => {
