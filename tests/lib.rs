@@ -1,6 +1,6 @@
 use packedsfen::yaneuraou::reader::PackedSfenReader;
 use packedsfen::traits::Reader;
-use usiagent::shogi::{Teban, Banmen, MochigomaCollections};
+use usiagent::shogi::{Teban, Banmen, MochigomaCollections, MochigomaKind};
 use usiagent::rule::BANMEN_START_POS;
 use std::collections::HashMap;
 
@@ -131,4 +131,44 @@ fn test_read_sfen_teban_gote_sente_hisha_kaku_nari_and_one_nari() {
         [SKyou, SKei, SGin, SKin, SOu, SKin, SGinN, SKeiN, SKyouN]
     ]));
     assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+}
+
+#[test]
+fn test_read_sfen_teban_sente_mochigoma_half() {
+    let mut reader = PackedSfenReader::new();
+
+    let input:[u8; 32] = [
+        0b1001100_0,0b1_0000100,0b011_10001,0b00111_101,0b1_101111_1,0b111_10111,0b01011_100,0b0_100011_1,
+        0b10111111,0b111_00000,0b01_0_10011,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b000000_10,
+        0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,0b0_0000000,0b000_010_00,0b10_000_010,
+        0b0_010_000_0,0b1_00001_00,0b0101_0100,0b11_01101_0,0b01011_000,0b111_00111,0b011111_00,0b0001111_0
+    ];
+
+    let mut ms:HashMap<MochigomaKind,u32> = HashMap::new();
+
+    ms.insert(MochigomaKind::Fu,9);
+    ms.insert(MochigomaKind::Kyou,2);
+    ms.insert(MochigomaKind::Kei,2);
+    ms.insert(MochigomaKind::Gin,2);
+    ms.insert(MochigomaKind::Kin,2);
+    ms.insert(MochigomaKind::Hisha, 1);
+    ms.insert(MochigomaKind::Kaku,1);
+
+    let emc = MochigomaCollections::Pair(ms,HashMap::new());
+
+    let (teban,banmen,mc) = reader.read_sfen(&input).unwrap();
+
+    assert_eq!(teban,Teban::Sente);
+    assert_eq!(banmen,Banmen([
+        [GKyouN, GKeiN, GGinN, GKin, GOu, GKin, GGin, GKei, GKyou],
+        [Blank, GHishaN, Blank, Blank, Blank, Blank, Blank, GKakuN, Blank],
+        [GFuN, GFu, GFu, GFu, GFu, GFu, GFu, GFu, GFu],
+        [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
+        [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
+        [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
+        [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
+        [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
+        [Blank, Blank, Blank, Blank, SOu, Blank, Blank, Blank, Blank]
+    ]));
+    assert_eq!(mc,emc);
 }
