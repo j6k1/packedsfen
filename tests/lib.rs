@@ -172,3 +172,46 @@ fn test_read_sfen_teban_sente_mochigoma_half() {
     ]));
     assert_eq!(mc,emc);
 }
+
+
+#[test]
+fn test_read_sfen_teban_gote_mochigoma_half() {
+    let mut reader = PackedSfenReader::new();
+
+    let input:[u8; 32] = [
+        0b1001100_1,0b0_0000100,0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,
+        0b0001_0000,0b0001_0001,0b0001_0001,0b0001_0001,0b0001_0001,0b0011111_0,
+        0b11_00000_0,0b1_0_001111,0b011_00001,0b00111_001,0b1_001111_0,0b111_00111,0b01011_000,
+        0b0_000011_0,
+        0b110_100_11,0b10_110_100,0b0_100_110_1,0b1_10001_11,0b0101_1100,0b11_11101_1,0b10011_110,
+        0b111_10111,0b101111_10,0b1111111_1
+    ];
+
+    let mut mg:HashMap<MochigomaKind,u32> = HashMap::new();
+
+    mg.insert(MochigomaKind::Fu,9);
+    mg.insert(MochigomaKind::Kyou,2);
+    mg.insert(MochigomaKind::Kei,2);
+    mg.insert(MochigomaKind::Gin,2);
+    mg.insert(MochigomaKind::Kin,2);
+    mg.insert(MochigomaKind::Hisha, 1);
+    mg.insert(MochigomaKind::Kaku,1);
+
+    let emc = MochigomaCollections::Pair(HashMap::new(),mg);
+
+    let (teban,banmen,mc) = reader.read_sfen(&input).unwrap();
+
+    assert_eq!(teban,Teban::Gote);
+    assert_eq!(banmen,Banmen([
+        [Blank, Blank, Blank, Blank, GOu, Blank, Blank, Blank, Blank],
+        [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
+        [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
+        [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
+        [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
+        [Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank, Blank],
+        [SFu, SFu, SFu, SFu, SFu, SFu, SFu, SFu, SFu],
+        [Blank, SKaku, Blank, Blank, Blank, Blank, Blank, SHisha, Blank],
+        [SKyou, SKei, SGin, SKin, SOu, SKin, SGin, SKei, SKyou]
+    ]));
+    assert_eq!(mc,emc);
+}

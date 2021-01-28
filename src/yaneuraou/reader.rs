@@ -234,7 +234,6 @@ impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
                             } else {
                                 Teban::Gote
                             };
-
                             let kind = MochigomaKind::try_from(&hc)?;
 
                             if teban == Teban::Sente {
