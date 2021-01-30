@@ -27,7 +27,8 @@ const MOCHIGOMA_MAP:[MochigomaKind; 7] = [
     MochigomaKind::Kin
 ];
 
-pub enum BeseMove {
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub enum BestMove {
     None,
     Null,
     Resign,
@@ -35,14 +36,14 @@ pub enum BeseMove {
     MoveTo(u32,u32,u32,u32,bool),
     MovePut(MochigomaKind,u32,u32)
 }
-impl traits::TryFrom<u16> for BeseMove {
+impl traits::TryFrom<u16> for BestMove {
     type Error = ReadError;
-    fn try_from(value: u16) -> Result<BeseMove,ReadError> {
+    fn try_from(value: u16) -> Result<BestMove,ReadError> {
         Ok(match value {
-            MOVE_NONE => BeseMove::None,
-            MOVE_NULL => BeseMove::Null,
-            MOVE_RESIGN => BeseMove::Resign,
-            MOVE_WIN => BeseMove::Win,
+            MOVE_NONE => BestMove::None,
+            MOVE_NULL => BestMove::Null,
+            MOVE_RESIGN => BestMove::Resign,
+            MOVE_WIN => BestMove::Win,
             v => {
                 if v & MOVE_DROP != 0 {
                     let index = (v >> 7) & 0x7f;
@@ -58,7 +59,7 @@ impl traits::TryFrom<u16> for BeseMove {
                     let y = sq / 9;
                     let x = sq - 9 * y;
 
-                    BeseMove::MovePut(kind,x as u32, y as u32)
+                    BestMove::MovePut(kind, x as u32, y as u32)
                 } else {
                     let n = v & MOVE_PROMOTE != 0;
 
@@ -71,7 +72,7 @@ impl traits::TryFrom<u16> for BeseMove {
                     let dy = sq / 9;
                     let dx = sq - 9 * dy;
 
-                    BeseMove::MoveTo(sx as u32, sy as u32, dx as u32, dy as u32, n)
+                    BestMove::MoveTo(sx as u32, sy as u32, dx as u32, dy as u32, n)
                 }
             }
         })
@@ -273,7 +274,7 @@ impl traits::Reader<ExtendFields> for PackedSfenReader {
 
         Ok((gamestate,ExtendFields {
             value: raw_packed_sfen_with_extended.value,
-            best_move: BeseMove::try_from(raw_packed_sfen_with_extended.best_move16)?,
+            best_move: BestMove::try_from(raw_packed_sfen_with_extended.best_move16)?,
             end_ply: raw_packed_sfen_with_extended.end_ply,
             game_result:  game_result
         }))

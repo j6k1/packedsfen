@@ -1,5 +1,7 @@
 use packedsfen::yaneuraou::reader::PackedSfenReader;
 use packedsfen::traits::Reader;
+use packedsfen::yaneuraou::reader::BestMove;
+
 use usiagent::shogi::{Teban, Banmen, MochigomaCollections, MochigomaKind};
 use usiagent::rule::BANMEN_START_POS;
 use std::collections::HashMap;
@@ -35,6 +37,8 @@ use usiagent::shogi::KomaKind::{
     GHishaN,
     Blank
 };
+use packedsfen::yaneuraou::haffman_code::ExtendFields;
+use usiagent::event::GameEndState;
 
 #[test]
 fn test_read_sfen_teban_sente_initial_position() {
@@ -361,7 +365,6 @@ fn test_read_sfen_teban_sente_mochigoma_half_and_half() {
     assert_eq!(mc,emc);
 }
 
-
 #[test]
 fn test_read_sfen_teban_gote_mochigoma_half_and_half() {
     let mut reader = PackedSfenReader::new();
@@ -414,4 +417,34 @@ fn test_read_sfen_teban_gote_mochigoma_half_and_half() {
         [Blank, Blank, Blank, Blank, SOu, Blank, Blank, Blank, Blank]
     ]));
     assert_eq!(mc,emc);
+}
+
+
+#[test]
+fn test_read_sfen_with_extended_test_score_value_is_min() {
+    let mut reader = PackedSfenReader::new();
+
+    let input:Vec<u8> = vec![
+        0b1001100_0,0b1_0000100,0b011_10001,0b00111_101,0b1_101111_1,0b111_10111,0b01011_100,0b0_100011_1,
+        0b10111111,0b111_00000,0b01_0_10011,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b000000_10,
+        0b00000000,0b00000000,0b001_00000,
+        0b001_0001_0,0b001_0001_0,0b001_0001_0,0b001_0001_0,0b011111_0_0,0b1_00000_00,
+        0b0_0011111,0b11_000011,0b0111_0010,0b001111_00,0b11_001111,0b1011_0001,0b000011_00,
+        0b11111111,0b11111111,0,0,0,0,1,0
+    ];
+
+    let ((teban,banmen,mc),ExtendFields {
+        value,
+        best_move,
+        end_ply,
+        game_result
+    }) = reader.read_sfen_with_extended(input).unwrap();
+
+    assert_eq!(teban,Teban::Sente);
+    assert_eq!(banmen,BANMEN_START_POS);
+    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(value,-1);
+    assert_eq!(best_move,BestMove::None);
+    assert_eq!(end_ply,0);
+    assert_eq!(game_result,GameEndState::Win);
 }
