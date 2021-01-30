@@ -136,7 +136,7 @@ impl PackedSfenReader {
         }
     }
 }
-impl<'a> traits::Reader<ExtendFields> for PackedSfenReader {
+impl traits::Reader<ExtendFields> for PackedSfenReader {
     fn read_sfen(&mut self, buf:&[u8]) -> Result<(Teban,Banmen,MochigomaCollections),ReadError> {
         if buf.len() != 32 {
             Err(ReadError::InvalidFormat(String::from("input size is incorrect.")))
