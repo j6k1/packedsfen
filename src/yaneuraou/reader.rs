@@ -85,7 +85,6 @@ impl PackedSfenReader {
         }
     }
 
-
     fn read_raw_sfen_with_extended(&mut self, buf:Vec<u8>) -> Result<PackedSfenWithExtended,ReadError> {
         if buf.len() != 40 {
             Err(ReadError::InvalidFormat(String::from("input size is incorrect.")))
