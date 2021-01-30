@@ -449,9 +449,37 @@ fn test_read_sfen_with_extended_test_score_value_is_min() {
     assert_eq!(game_result,GameEndState::Win);
 }
 
-
 #[test]
 fn test_read_sfen_with_extended_test_score_value_is_max() {
+    let mut reader = PackedSfenReader::new();
+
+    let input:Vec<u8> = vec![
+        0b1001100_0,0b1_0000100,0b011_10001,0b00111_101,0b1_101111_1,0b111_10111,0b01011_100,0b0_100011_1,
+        0b10111111,0b111_00000,0b01_0_10011,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b000000_10,
+        0b00000000,0b00000000,0b001_00000,
+        0b001_0001_0,0b001_0001_0,0b001_0001_0,0b001_0001_0,0b011111_0_0,0b1_00000_00,
+        0b0_0011111,0b11_000011,0b0111_0010,0b001111_00,0b11_001111,0b1011_0001,0b000011_00,
+        0b11111111,0b01111111,0,0,0,0,1,0
+    ];
+
+    let ((teban,banmen,mc),ExtendFields {
+        value,
+        best_move,
+        end_ply,
+        game_result
+    }) = reader.read_sfen_with_extended(input).unwrap();
+
+    assert_eq!(teban,Teban::Sente);
+    assert_eq!(banmen,BANMEN_START_POS);
+    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(value,std::i16::MAX);
+    assert_eq!(best_move,BestMove::None);
+    assert_eq!(end_ply,0);
+    assert_eq!(game_result,GameEndState::Win);
+}
+
+#[test]
+fn test_read_sfen_with_extended_test_bestmove_none() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -785,7 +813,6 @@ fn test_read_sfen_with_extended_test_bestmove_drop() {
     }
 }
 
-
 #[test]
 fn test_read_sfen_with_extended_test_bestmove_drop_outofrange() {
     let mut reader = PackedSfenReader::new();
@@ -813,5 +840,168 @@ fn test_read_sfen_with_extended_test_bestmove_drop_outofrange() {
         let r = reader.read_sfen_with_extended(input);
 
         assert_eq!(r, Err(ReadError::InvalidFormat(String::from("piece kind is invalid."))));
+    }
+}
+
+#[test]
+fn test_read_sfen_with_extended_test_end_play_is_min() {
+    let mut reader = PackedSfenReader::new();
+
+    let input:Vec<u8> = vec![
+        0b1001100_0,0b1_0000100,0b011_10001,0b00111_101,0b1_101111_1,0b111_10111,0b01011_100,0b0_100011_1,
+        0b10111111,0b111_00000,0b01_0_10011,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b000000_10,
+        0b00000000,0b00000000,0b001_00000,
+        0b001_0001_0,0b001_0001_0,0b001_0001_0,0b001_0001_0,0b011111_0_0,0b1_00000_00,
+        0b0_0011111,0b11_000011,0b0111_0010,0b001111_00,0b11_001111,0b1011_0001,0b000011_00,
+        0b11111111,0b11111111,0,0,0,0,1,0
+    ];
+
+    let ((teban,banmen,mc),ExtendFields {
+        value,
+        best_move,
+        end_ply,
+        game_result
+    }) = reader.read_sfen_with_extended(input).unwrap();
+
+    assert_eq!(teban,Teban::Sente);
+    assert_eq!(banmen,BANMEN_START_POS);
+    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(value,-1);
+    assert_eq!(best_move,BestMove::None);
+    assert_eq!(end_ply,0);
+    assert_eq!(game_result,GameEndState::Win);
+}
+
+#[test]
+fn test_read_sfen_with_extended_test_end_play_is_max() {
+    let mut reader = PackedSfenReader::new();
+
+    let input:Vec<u8> = vec![
+        0b1001100_0,0b1_0000100,0b011_10001,0b00111_101,0b1_101111_1,0b111_10111,0b01011_100,0b0_100011_1,
+        0b10111111,0b111_00000,0b01_0_10011,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b000000_10,
+        0b00000000,0b00000000,0b001_00000,
+        0b001_0001_0,0b001_0001_0,0b001_0001_0,0b001_0001_0,0b011111_0_0,0b1_00000_00,
+        0b0_0011111,0b11_000011,0b0111_0010,0b001111_00,0b11_001111,0b1011_0001,0b000011_00,
+        0b11111111,0b11111111,0,0,0xFF,0xFF,1,0
+    ];
+
+    let ((teban,banmen,mc),ExtendFields {
+        value,
+        best_move,
+        end_ply,
+        game_result
+    }) = reader.read_sfen_with_extended(input).unwrap();
+
+    assert_eq!(teban,Teban::Sente);
+    assert_eq!(banmen,BANMEN_START_POS);
+    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(value,-1);
+    assert_eq!(best_move,BestMove::None);
+    assert_eq!(end_ply,std::u16::MAX);
+    assert_eq!(game_result,GameEndState::Win);
+}
+
+#[test]
+fn test_read_sfen_with_extended_test_game_result_is_win() {
+    let mut reader = PackedSfenReader::new();
+
+    let input:Vec<u8> = vec![
+        0b1001100_0,0b1_0000100,0b011_10001,0b00111_101,0b1_101111_1,0b111_10111,0b01011_100,0b0_100011_1,
+        0b10111111,0b111_00000,0b01_0_10011,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b000000_10,
+        0b00000000,0b00000000,0b001_00000,
+        0b001_0001_0,0b001_0001_0,0b001_0001_0,0b001_0001_0,0b011111_0_0,0b1_00000_00,
+        0b0_0011111,0b11_000011,0b0111_0010,0b001111_00,0b11_001111,0b1011_0001,0b000011_00,
+        0b11111111,0b11111111,0,0,0xFF,0xFF,1,0
+    ];
+
+    let ((teban,banmen,mc),ExtendFields {
+        value,
+        best_move,
+        end_ply,
+        game_result
+    }) = reader.read_sfen_with_extended(input).unwrap();
+
+    assert_eq!(teban,Teban::Sente);
+    assert_eq!(banmen,BANMEN_START_POS);
+    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(value,-1);
+    assert_eq!(best_move,BestMove::None);
+    assert_eq!(end_ply,std::u16::MAX);
+    assert_eq!(game_result,GameEndState::Win);
+}
+
+#[test]
+fn test_read_sfen_with_extended_test_game_result_is_lose() {
+    let mut reader = PackedSfenReader::new();
+
+    let input:Vec<u8> = vec![
+        0b1001100_0,0b1_0000100,0b011_10001,0b00111_101,0b1_101111_1,0b111_10111,0b01011_100,0b0_100011_1,
+        0b10111111,0b111_00000,0b01_0_10011,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b000000_10,
+        0b00000000,0b00000000,0b001_00000,
+        0b001_0001_0,0b001_0001_0,0b001_0001_0,0b001_0001_0,0b011111_0_0,0b1_00000_00,
+        0b0_0011111,0b11_000011,0b0111_0010,0b001111_00,0b11_001111,0b1011_0001,0b000011_00,
+        0b11111111,0b11111111,0,0,0xFF,0xFF,0xFF,0
+    ];
+
+    let ((teban,banmen,mc),ExtendFields {
+        value,
+        best_move,
+        end_ply,
+        game_result
+    }) = reader.read_sfen_with_extended(input).unwrap();
+
+    assert_eq!(teban,Teban::Sente);
+    assert_eq!(banmen,BANMEN_START_POS);
+    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(value,-1);
+    assert_eq!(best_move,BestMove::None);
+    assert_eq!(end_ply,std::u16::MAX);
+    assert_eq!(game_result,GameEndState::Lose);
+}
+
+#[test]
+fn test_read_sfen_with_extended_test_game_result_is_draw() {
+    let mut reader = PackedSfenReader::new();
+
+    let input:Vec<u8> = vec![
+        0b1001100_0,0b1_0000100,0b011_10001,0b00111_101,0b1_101111_1,0b111_10111,0b01011_100,0b0_100011_1,
+        0b10111111,0b111_00000,0b01_0_10011,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b01_1001_10,0b000000_10,
+        0b00000000,0b00000000,0b001_00000,
+        0b001_0001_0,0b001_0001_0,0b001_0001_0,0b001_0001_0,0b011111_0_0,0b1_00000_00,
+        0b0_0011111,0b11_000011,0b0111_0010,0b001111_00,0b11_001111,0b1011_0001,0b000011_00,
+        0b11111111,0b11111111,0,0,0xFF,0xFF,0,0
+    ];
+
+    let ((teban,banmen,mc),ExtendFields {
+        value,
+        best_move,
+        end_ply,
+        game_result
+    }) = reader.read_sfen_with_extended(input).unwrap();
+
+    assert_eq!(teban,Teban::Sente);
+    assert_eq!(banmen,BANMEN_START_POS);
+    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(value,-1);
+    assert_eq!(best_move,BestMove::None);
+    assert_eq!(end_ply,std::u16::MAX);
+    assert_eq!(game_result,GameEndState::Draw);
+}
+
+#[test]
+fn test_read_sfen_with_extended_test_buffer_size_incorrect() {
+    let mut reader = PackedSfenReader::new();
+
+    let inputs = vec![
+        (0..41).map(|_| 0).collect::<Vec<u8>>(),
+        (0..39).map(|_| 0).collect::<Vec<u8>>(),
+        vec![]
+    ];
+
+
+    for input in inputs.into_iter() {
+        let r = reader.read_sfen_with_extended(input);
+
+        assert_eq!(r, Err(ReadError::InvalidFormat(String::from("input size is incorrect."))));
     }
 }
