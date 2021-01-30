@@ -1,6 +1,6 @@
 use std::{fmt, error};
 
-#[derive(Debug)]
+#[derive(Debug,PartialEq,Eq)]
 pub enum ReadError {
     InvalidState(String),
     InvalidFormat(String),

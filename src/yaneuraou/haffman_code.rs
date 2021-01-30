@@ -112,9 +112,11 @@ impl traits::TryFrom<&HuffmanCode> for MochigomaKind {
         }
     }
 }
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct PackedSfen {
     pub buf: [u8; 32]
 }
+#[derive(Debug, PartialEq, Eq, Clone)]
 #[repr(C)]
 pub struct PackedSfenWithExtended {
     pub packed: PackedSfen,
@@ -124,6 +126,7 @@ pub struct PackedSfenWithExtended {
     pub game_result: i8,
     pub padding: u8,
 }
+#[derive(Debug, PartialEq, Eq, Clone)]
 #[repr(C)]
 pub struct ExtendFields {
     pub value: i16,
