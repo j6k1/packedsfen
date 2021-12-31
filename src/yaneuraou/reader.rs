@@ -7,7 +7,6 @@ use super::super::traits;
 use super::haffman_code::ExtendFields;
 use crate::yaneuraou::haffman_code::{HuffmanCode, PackedSfenWithExtended, PackedSfen};
 use crate::traits::TryFrom;
-use std::collections::HashMap;
 
 const MOVE_NONE:u16 = 0;
 const MOVE_NULL:u16 = (1 << 7) + 1;
@@ -144,8 +143,8 @@ impl traits::Reader<ExtendFields> for PackedSfenReader {
             let mut bs = BitStreamReader::new(buf);
 
             let mut banmen = Banmen([[KomaKind::Blank; 9]; 9]);
-            let mut ms:HashMap<MochigomaKind,u32> = HashMap::new();
-            let mut mg:HashMap<MochigomaKind,u32> = HashMap::new();
+            let mut ms:Mochigoma = Mochigoma::new();
+            let mut mg:Mochigoma = Mochigoma::new();
 
             let teban = if bs.get_bit_from_lsb()? == 0 {
                 Teban::Sente
@@ -237,13 +236,9 @@ impl traits::Reader<ExtendFields> for PackedSfenReader {
                             let kind = MochigomaKind::try_from(&hc)?;
 
                             if teban == Teban::Sente {
-                                let c = ms.get(&kind).map(|&k| k).unwrap_or(0);
-
-                                ms.insert(kind,c+1);
+                                ms.put(kind);
                             } else {
-                                let c = mg.get(&kind).map(|&k| k).unwrap_or(0);
-
-                                mg.insert(kind,c+1);
+                                mg.put(kind);
                             }
                             break;
                         },

@@ -4,7 +4,7 @@ use packedsfen::yaneuraou::reader::BestMove;
 
 use usiagent::shogi::{Teban, Banmen, MochigomaCollections, MochigomaKind};
 use usiagent::rule::BANMEN_START_POS;
-use std::collections::HashMap;
+use usiagent::shogi::Mochigoma;
 
 use usiagent::shogi::KomaKind::{
     SFu,
@@ -57,7 +57,7 @@ fn test_read_sfen_teban_sente_initial_position() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
 }
 
 #[test]
@@ -76,7 +76,7 @@ fn test_read_sfen_teban_gote_initial_position() {
 
     assert_eq!(teban,Teban::Gote);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
 }
 
 #[test]
@@ -105,7 +105,7 @@ fn test_read_sfen_teban_sente_sente_hisha_kaku_nari_and_one_nari() {
         [Blank, SKakuN, Blank, Blank, Blank, Blank, Blank, SHishaN, Blank],
         [SKyou, SKei, SGin, SKin, SOu, SKin, SGinN, SKeiN, SKyouN]
     ]));
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
 }
 
 
@@ -135,7 +135,7 @@ fn test_read_sfen_teban_gote_sente_hisha_kaku_nari_and_one_nari() {
         [Blank, SKaku, Blank, Blank, Blank, Blank, Blank, SHisha, Blank],
         [SKyou, SKei, SGin, SKin, SOu, SKin, SGinN, SKeiN, SKyouN]
     ]));
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
 }
 
 #[test]
@@ -149,7 +149,7 @@ fn test_read_sfen_teban_sente_mochigoma_half() {
         0b0_010_000_0,0b1_00001_00,0b0101_0100,0b11_01101_0,0b01011_000,0b111_00111,0b011111_00,0b0001111_0
     ];
 
-    let mut ms:HashMap<MochigomaKind,u32> = HashMap::new();
+    let mut ms:Mochigoma = Mochigoma::new();
 
     ms.insert(MochigomaKind::Fu,9);
     ms.insert(MochigomaKind::Kyou,2);
@@ -159,7 +159,7 @@ fn test_read_sfen_teban_sente_mochigoma_half() {
     ms.insert(MochigomaKind::Hisha, 1);
     ms.insert(MochigomaKind::Kaku,1);
 
-    let emc = MochigomaCollections::Pair(ms,HashMap::new());
+    let emc = MochigomaCollections::Pair(ms,Mochigoma::new());
 
     let (teban,banmen,mc) = reader.read_sfen(&input).unwrap();
 
@@ -191,7 +191,7 @@ fn test_read_sfen_teban_gote_mochigoma_half() {
         0b111_10111,0b101111_10,0b1111111_1
     ];
 
-    let mut mg:HashMap<MochigomaKind,u32> = HashMap::new();
+    let mut mg:Mochigoma = Mochigoma::new();
 
     mg.insert(MochigomaKind::Fu,9);
     mg.insert(MochigomaKind::Kyou,2);
@@ -201,7 +201,7 @@ fn test_read_sfen_teban_gote_mochigoma_half() {
     mg.insert(MochigomaKind::Hisha, 1);
     mg.insert(MochigomaKind::Kaku,1);
 
-    let emc = MochigomaCollections::Pair(HashMap::new(),mg);
+    let emc = MochigomaCollections::Pair(Mochigoma::new(),mg);
 
     let (teban,banmen,mc) = reader.read_sfen(&input).unwrap();
 
@@ -235,7 +235,7 @@ fn test_read_sfen_teban_sente_mochigoma_full() {
         0b01111_000,0b011111_01,0b0111111_0
     ];
 
-    let mut ms:HashMap<MochigomaKind,u32> = HashMap::new();
+    let mut ms:Mochigoma = Mochigoma::new();
 
     ms.insert(MochigomaKind::Fu,18);
     ms.insert(MochigomaKind::Kyou,4);
@@ -245,7 +245,7 @@ fn test_read_sfen_teban_sente_mochigoma_full() {
     ms.insert(MochigomaKind::Hisha, 2);
     ms.insert(MochigomaKind::Kaku,2);
 
-    let mg:HashMap<MochigomaKind,u32> = HashMap::new();
+    let mg:Mochigoma = Mochigoma::new();
 
     let emc = MochigomaCollections::Pair(ms,mg);
 
@@ -281,9 +281,9 @@ fn test_read_sfen_teban_gote_mochigoma_full() {
         0b01111_100,0b011111_11,0b1111111_1
     ];
 
-    let ms:HashMap<MochigomaKind,u32> = HashMap::new();
+    let ms:Mochigoma = Mochigoma::new();
 
-    let mut mg:HashMap<MochigomaKind,u32> = HashMap::new();
+    let mut mg:Mochigoma = Mochigoma::new();
 
     mg.insert(MochigomaKind::Fu,18);
     mg.insert(MochigomaKind::Kyou,4);
@@ -327,7 +327,7 @@ fn test_read_sfen_teban_sente_mochigoma_half_and_half() {
         0b01111_000,0b011111_11,0b1111111_0
     ];
 
-    let mut ms:HashMap<MochigomaKind,u32> = HashMap::new();
+    let mut ms:Mochigoma = Mochigoma::new();
 
     ms.insert(MochigomaKind::Fu,9);
     ms.insert(MochigomaKind::Kyou,2);
@@ -337,7 +337,7 @@ fn test_read_sfen_teban_sente_mochigoma_half_and_half() {
     ms.insert(MochigomaKind::Hisha, 1);
     ms.insert(MochigomaKind::Kaku,1);
 
-    let mut mg:HashMap<MochigomaKind,u32> = HashMap::new();
+    let mut mg:Mochigoma = Mochigoma::new();
 
     mg.insert(MochigomaKind::Fu,9);
     mg.insert(MochigomaKind::Kyou,2);
@@ -381,7 +381,7 @@ fn test_read_sfen_teban_gote_mochigoma_half_and_half() {
         0b01111_000,0b011111_11,0b1111111_0
     ];
 
-    let mut ms:HashMap<MochigomaKind,u32> = HashMap::new();
+    let mut ms:Mochigoma = Mochigoma::new();
 
     ms.insert(MochigomaKind::Fu,9);
     ms.insert(MochigomaKind::Kyou,2);
@@ -391,7 +391,7 @@ fn test_read_sfen_teban_gote_mochigoma_half_and_half() {
     ms.insert(MochigomaKind::Hisha, 1);
     ms.insert(MochigomaKind::Kaku,1);
 
-    let mut mg:HashMap<MochigomaKind,u32> = HashMap::new();
+    let mut mg:Mochigoma = Mochigoma::new();
 
     mg.insert(MochigomaKind::Fu,9);
     mg.insert(MochigomaKind::Kyou,2);
@@ -442,7 +442,7 @@ fn test_read_sfen_with_extended_test_score_value_is_min() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,-1);
     assert_eq!(best_move,BestMove::None);
     assert_eq!(end_ply,0);
@@ -471,7 +471,7 @@ fn test_read_sfen_with_extended_test_score_value_is_max() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,std::i16::MAX);
     assert_eq!(best_move,BestMove::None);
     assert_eq!(end_ply,0);
@@ -500,7 +500,7 @@ fn test_read_sfen_with_extended_test_bestmove_none() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,std::i16::MAX);
     assert_eq!(best_move,BestMove::None);
     assert_eq!(end_ply,0);
@@ -529,7 +529,7 @@ fn test_read_sfen_with_extended_test_bestmove_null() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,-1);
     assert_eq!(best_move,BestMove::Null);
     assert_eq!(end_ply,0);
@@ -558,7 +558,7 @@ fn test_read_sfen_with_extended_test_bestmove_resign() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,-1);
     assert_eq!(best_move,BestMove::Resign);
     assert_eq!(end_ply,0);
@@ -587,7 +587,7 @@ fn test_read_sfen_with_extended_test_bestmove_win() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,-1);
     assert_eq!(best_move,BestMove::Win);
     assert_eq!(end_ply,0);
@@ -650,7 +650,7 @@ fn test_read_sfen_with_extended_test_bestmove_non_drop_non_promote() {
 
         assert_eq!(teban, Teban::Sente);
         assert_eq!(banmen, BANMEN_START_POS);
-        assert_eq!(mc, MochigomaCollections::Pair(HashMap::new(), HashMap::new()));
+        assert_eq!(mc, MochigomaCollections::Pair(Mochigoma::new(), Mochigoma::new()));
         assert_eq!(value, -1);
         assert_eq!(best_move, answer_best_move);
         assert_eq!(end_ply, 0);
@@ -714,7 +714,7 @@ fn test_read_sfen_with_extended_test_bestmove_non_drop_promote() {
 
         assert_eq!(teban, Teban::Sente);
         assert_eq!(banmen, BANMEN_START_POS);
-        assert_eq!(mc, MochigomaCollections::Pair(HashMap::new(), HashMap::new()));
+        assert_eq!(mc, MochigomaCollections::Pair(Mochigoma::new(), Mochigoma::new()));
         assert_eq!(value, -1);
         assert_eq!(best_move, answer_best_move);
         assert_eq!(end_ply, 0);
@@ -805,7 +805,7 @@ fn test_read_sfen_with_extended_test_bestmove_drop() {
 
         assert_eq!(teban, Teban::Sente);
         assert_eq!(banmen, BANMEN_START_POS);
-        assert_eq!(mc, MochigomaCollections::Pair(HashMap::new(), HashMap::new()));
+        assert_eq!(mc, MochigomaCollections::Pair(Mochigoma::new(), Mochigoma::new()));
         assert_eq!(value, -1);
         assert_eq!(best_move, answer_best_move);
         assert_eq!(end_ply, 0);
@@ -865,7 +865,7 @@ fn test_read_sfen_with_extended_test_end_play_is_min() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,-1);
     assert_eq!(best_move,BestMove::None);
     assert_eq!(end_ply,0);
@@ -894,7 +894,7 @@ fn test_read_sfen_with_extended_test_end_play_is_max() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,-1);
     assert_eq!(best_move,BestMove::None);
     assert_eq!(end_ply,std::u16::MAX);
@@ -923,7 +923,7 @@ fn test_read_sfen_with_extended_test_game_result_is_win() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,-1);
     assert_eq!(best_move,BestMove::None);
     assert_eq!(end_ply,std::u16::MAX);
@@ -952,7 +952,7 @@ fn test_read_sfen_with_extended_test_game_result_is_lose() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,-1);
     assert_eq!(best_move,BestMove::None);
     assert_eq!(end_ply,std::u16::MAX);
@@ -981,7 +981,7 @@ fn test_read_sfen_with_extended_test_game_result_is_draw() {
 
     assert_eq!(teban,Teban::Sente);
     assert_eq!(banmen,BANMEN_START_POS);
-    assert_eq!(mc,MochigomaCollections::Pair(HashMap::new(),HashMap::new()));
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
     assert_eq!(value,-1);
     assert_eq!(best_move,BestMove::None);
     assert_eq!(end_ply,std::u16::MAX);
