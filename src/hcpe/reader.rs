@@ -84,7 +84,7 @@ impl HcpeReader {
     }
 
     fn read_raw_sfen_with_extended(&mut self, buf:Vec<u8>) -> Result<HuffmanCodedPosAndEval,ReadError> {
-        if buf.len() != 40 {
+        if buf.len() != 38 {
             Err(ReadError::InvalidFormat(String::from("input size is incorrect.")))
         } else {
             let mut buf = buf;
