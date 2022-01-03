@@ -55,21 +55,21 @@ impl traits::TryFrom<u16> for BestMove {
 
                     let sq = v & 0x7f;
 
-                    let y = sq / 9;
-                    let x = sq - 9 * y;
+                    let x = sq / 9;
+                    let y = sq - 9 * x;
 
                     BestMove::MovePut(kind, x as u32, y as u32)
                 } else {
                     let n = v & MOVE_PROMOTE != 0;
 
                     let sq = (v >> 7) & 0x7f;
-                    let sy = sq / 9;
-                    let sx = sq - 9 * sy;
+                    let sx = sq / 9;
+                    let sy = sq - 9 * sx;
 
                     let sq = v & 0x7f;
 
-                    let dy = sq / 9;
-                    let dx = sq - 9 * dy;
+                    let dx = sq / 9;
+                    let dy = sq - 9 * dx;
 
                     BestMove::MoveTo(sx as u32, sy as u32, dx as u32, dy as u32, n)
                 }
@@ -153,14 +153,14 @@ impl traits::Reader<ExtendFields> for PackedSfenReader {
             };
 
             let sq = bs.get_bits_from_lsb(7)? as u32;
-            let y = sq as usize / 9;
-            let x = sq as usize - 9 * y;
+            let x = sq as usize / 9;
+            let y = sq as usize - 9 * x;
 
             banmen.0[y][x] = KomaKind::SOu;
 
             let sq = bs.get_bits_from_lsb(7)? as u32;
-            let y = sq as usize / 9;
-            let x = sq as usize - 9 * y;
+            let x = sq as usize / 9;
+            let y = sq as usize - 9 * x;
 
             banmen.0[y][x] = KomaKind::GOu;
 
