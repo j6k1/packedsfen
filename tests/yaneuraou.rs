@@ -42,7 +42,7 @@ use usiagent::event::GameEndState;
 use packedsfen::error::ReadError;
 
 #[test]
-fn test_read_sfen_teban_sente_initial_position() {
+fn test_yaneuraou_read_sfen_teban_sente_initial_position() {
     let mut reader = PackedSfenReader::new();
 
     let input:[u8; 32] = [
@@ -62,7 +62,7 @@ fn test_read_sfen_teban_sente_initial_position() {
 }
 
 #[test]
-fn test_read_sfen_teban_gote_initial_position() {
+fn test_yaneuraou_read_sfen_teban_gote_initial_position() {
     let mut reader = PackedSfenReader::new();
 
     let input:[u8; 32] = [
@@ -82,16 +82,16 @@ fn test_read_sfen_teban_gote_initial_position() {
 }
 
 #[test]
-fn test_read_sfen_teban_sente_sente_hisha_kaku_nari_and_one_nari() {
+fn test_yaneuraou_read_sfen_teban_sente_sente_hisha_kaku_nari_and_one_nari() {
     let mut reader = PackedSfenReader::new();
 
     let input:[u8; 32] = [
-        0b0101100_0,0b1_0100100,0b01_0_11001,0b001_0_0_0_10,0b000011_0_0,0b11_111011,
-        0b01_101111,0b001_0_0_0_10,0b1011111_0,0b1_001011_0,0b01_0_11011,
-        0b001_0_0_0_10,0b000111_0_0,0b1_0_101111,0b01_0_0_0_100,0b01111_0_00,
-        0b0_0_1001_0_0,0b11_0_0001_0,0b001_0_1011,0b0001_0_0_0_1,0b1_001111_0,
-        0b01_0_10011,0b001_0_0_0_10,0b010111_0_0,0b11_101011,0b01_100111,0b001_0_0_0_10,
-        0b1111111_0,0b1_011011_0,0b01_0_10001,0b101_0_0_0_10,0b010011_0_0
+        0b0101100_0,0b1_0100100,0b01_0_11001,0b001_0_0_0_11,0b000011_0_0,0b11_111011,
+        0b01_101111,0b001_0_0_0_10,0b1011111_0,0b1_001011_0,0b01_0_11011,0b001_0_0_0_10,
+        0b000111_0_0,0b1_0_101111,0b01_0_0_0_100,0b01111_0_00,0b0_0_1001_0_0,
+        0b11_0_0001_0,0b001_0_1011,0b0001_0_0_0_1,0b1_001111_0,0b01_0_10011,
+        0b001_0_0_0_10,0b010111_0_0,0b11_101011,0b01_100111,0b001_0_0_0_10,0b1111111_0,
+        0b1_011011_0,0b01_0_10001,0b101_0_0_0_10,0b010011_0_0
     ];
 
     let (teban,banmen,mc) = reader.read_sfen(&input).unwrap();
@@ -113,16 +113,16 @@ fn test_read_sfen_teban_sente_sente_hisha_kaku_nari_and_one_nari() {
 
 
 #[test]
-fn test_read_sfen_teban_gote_sente_hisha_kaku_nari_and_one_nari() {
+fn test_yaneuraou_read_sfen_teban_gote_sente_hisha_kaku_nari_and_one_nari() {
     let mut reader = PackedSfenReader::new();
 
     let input:[u8; 32] = [
-        0b0101100_1,0b1_0100100,0b01_0_11001,0b001_0_0_0_10,0b000011_0_0,0b11_111011,
-        0b01_101111,0b001_0_0_0_10,0b1011111_0,0b1_001011_0,0b01_0_11011,
-        0b001_0_0_0_10,0b000111_0_0,0b1_0_101111,0b01_0_0_0_100,0b01111_0_00,
-        0b0_0_1001_0_0,0b11_0_0001_0,0b001_0_1011,0b0001_0_0_0_1,0b1_001111_0,
-        0b01_0_10011,0b001_0_0_0_10,0b010111_0_0,0b11_101011,0b01_100111,0b001_0_0_0_10,
-        0b1111111_0,0b1_011011_0,0b01_0_10001,0b101_0_0_0_10,0b010011_0_0
+        0b0101100_1,0b1_0100100,0b01_0_11001,0b001_0_0_0_11,0b000011_0_0,0b11_111011,
+        0b01_111111,0b001_0_0_0_10,0b0011111_0,0b1_001011_0,0b01_0_11011,0b001_0_0_0_10,
+        0b000111_0_0,0b1_0_101111,0b01_0_0_0_100,0b01111_0_00,0b0_0_1001_0_0,0b11_0_0001_0,
+        0b001_0_1011,0b0001_0_0_0_1,0b1_001111_0,0b01_0_10011,0b001_0_0_0_10,0b010111_0_0,
+        0b11_101011,0b01_110111,0b001_0_0_0_10,0b0111111_0,0b1_011011_0,0b01_0_10001,
+        0b101_0_0_0_10,0b010011_0_0,
     ];
 
     let (teban,banmen,mc) = reader.read_sfen(&input).unwrap();
@@ -143,17 +143,16 @@ fn test_read_sfen_teban_gote_sente_hisha_kaku_nari_and_one_nari() {
 }
 
 #[test]
-fn test_read_sfen_teban_sente_mochigoma_half() {
+fn test_yaneuraou_read_sfen_teban_sente_mochigoma_half() {
     let mut reader = PackedSfenReader::new();
 
     let input:[u8; 32] = [
-        0b0101100_0,0b1_0100100,0b01_0_10001,0b0_0_0_0_0_0_10,0b11_101011,
-        0b01_101111,0b0_0_0_0_0_0_10,0b1_0_100111,0b0_0_0_0_0_100,0b0_101111_0,
-        0b0_0_0_0_1001,0b0_1001_0_0_0,0b1111_0_0_0_0,0b0_1001_0_10,0b111_0_0_0_0_0,
-        0b1001_0_100,0b11_0_00_0_0_0,0b1111_1010,0b1001_1000,0b11_0_0_0_0_0_0,
-        0b001_0_1000,0b0_0_0_0_0_0_0_1,0b000_010_00,0b10_000_010,0b0_010_000_0,
-        0b1_00001_00,0b0101_0100,0b11_01101_0,0b01011_000,0b1_0001111,0b11_001111,
-        0b00111_001
+        0b0101100_0,0b1_0100100,0b01_0_10001,0b0_0_0_0_0_0_10,0b11_101011,0b01_101111,
+        0b0_0_0_0_0_0_10,0b1_0_100111,0b0_0_0_0_0_100,0b0_101111_0,0b0_0_0_0_1001,
+        0b0_1001_0_0_0,0b1111_0_0_0_0,0b0_1001_0_10,0b111_0_0_0_0_0,0b1001_0_100,
+        0b11_0_0_0_0_0_0,0b1111_1010,0b1001_1001,0b11_0_0_0_0_0_0,0b001_0_1000,
+        0b0_0_0_0_0_0_0_1,0b000_010_00,0b10_000_010,0b0_010_000_0,0b1_00001_00,
+        0b0101_0100,0b11_01101_0,0b01011_000,0b1_0001111,0b11_011111,0b00111_001
     ];
 
     let mut ms:Mochigoma = Mochigoma::new();
@@ -186,7 +185,7 @@ fn test_read_sfen_teban_sente_mochigoma_half() {
 }
 
 #[test]
-fn test_read_sfen_teban_gote_mochigoma_half() {
+fn test_yaneuraou_read_sfen_teban_gote_mochigoma_half() {
     let mut reader = PackedSfenReader::new();
 
     let input:[u8; 32] = [
@@ -229,7 +228,7 @@ fn test_read_sfen_teban_gote_mochigoma_half() {
 }
 
 #[test]
-fn test_read_sfen_teban_sente_mochigoma_full() {
+fn test_yaneuraou_read_sfen_teban_sente_mochigoma_full() {
     let mut reader = PackedSfenReader::new();
 
     let input:[u8; 32] = [
@@ -275,7 +274,7 @@ fn test_read_sfen_teban_sente_mochigoma_full() {
 }
 
 #[test]
-fn test_read_sfen_teban_gote_mochigoma_full() {
+fn test_yaneuraou_read_sfen_teban_gote_mochigoma_full() {
     let mut reader = PackedSfenReader::new();
 
     let input:[u8; 32] = [
@@ -321,7 +320,7 @@ fn test_read_sfen_teban_gote_mochigoma_full() {
 }
 
 #[test]
-fn test_read_sfen_teban_sente_mochigoma_half_and_half() {
+fn test_yaneuraou_read_sfen_teban_sente_mochigoma_half_and_half() {
     let mut reader = PackedSfenReader::new();
 
     let input:[u8; 32] = [
@@ -375,7 +374,7 @@ fn test_read_sfen_teban_sente_mochigoma_half_and_half() {
 }
 
 #[test]
-fn test_read_sfen_teban_gote_mochigoma_half_and_half() {
+fn test_yaneuraou_yaneuraou_read_sfen_teban_gote_mochigoma_half_and_half() {
     let mut reader = PackedSfenReader::new();
 
     let input:[u8; 32] = [
@@ -429,7 +428,7 @@ fn test_read_sfen_teban_gote_mochigoma_half_and_half() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_score_value_is_min() {
+fn test_yaneuraou_read_sfen_with_extended_test_score_value_is_min() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -458,7 +457,7 @@ fn test_read_sfen_with_extended_test_score_value_is_min() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_score_value_is_max() {
+fn test_yaneuraou_read_sfen_with_extended_test_score_value_is_max() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -487,7 +486,7 @@ fn test_read_sfen_with_extended_test_score_value_is_max() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_bestmove_none() {
+fn test_yaneuraou_read_sfen_with_extended_test_bestmove_none() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -516,7 +515,7 @@ fn test_read_sfen_with_extended_test_bestmove_none() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_bestmove_null() {
+fn test_yaneuraou_read_sfen_with_extended_test_bestmove_null() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -545,7 +544,7 @@ fn test_read_sfen_with_extended_test_bestmove_null() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_bestmove_resign() {
+fn test_yaneuraou_read_sfen_with_extended_test_bestmove_resign() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -574,7 +573,7 @@ fn test_read_sfen_with_extended_test_bestmove_resign() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_bestmove_win() {
+fn test_yaneuraou_read_sfen_with_extended_test_bestmove_win() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -603,7 +602,7 @@ fn test_read_sfen_with_extended_test_bestmove_win() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_bestmove_non_drop_non_promote() {
+fn test_yaneuraou_read_sfen_with_extended_test_bestmove_non_drop_non_promote() {
     let mut reader = PackedSfenReader::new();
 
     let inputs:Vec<Vec<u8>> = vec![
@@ -667,7 +666,7 @@ fn test_read_sfen_with_extended_test_bestmove_non_drop_non_promote() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_bestmove_non_drop_promote() {
+fn test_yaneuraou_read_sfen_with_extended_test_bestmove_non_drop_promote() {
     let mut reader = PackedSfenReader::new();
 
     let inputs:Vec<Vec<u8>> = vec![
@@ -731,7 +730,7 @@ fn test_read_sfen_with_extended_test_bestmove_non_drop_promote() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_bestmove_drop() {
+fn test_yaneuraou_read_sfen_with_extended_test_bestmove_drop() {
     let mut reader = PackedSfenReader::new();
 
     let inputs:Vec<Vec<u8>> = vec![
@@ -822,7 +821,7 @@ fn test_read_sfen_with_extended_test_bestmove_drop() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_bestmove_drop_outofrange() {
+fn test_yaneuraou_read_sfen_with_extended_test_bestmove_drop_outofrange() {
     let mut reader = PackedSfenReader::new();
 
     let inputs:Vec<Vec<u8>> = vec![
@@ -852,7 +851,7 @@ fn test_read_sfen_with_extended_test_bestmove_drop_outofrange() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_end_play_is_min() {
+fn test_yaneuraou_read_sfen_with_extended_test_end_play_is_min() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -881,7 +880,7 @@ fn test_read_sfen_with_extended_test_end_play_is_min() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_end_play_is_max() {
+fn test_yaneuraou_read_sfen_with_extended_test_end_play_is_max() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -910,7 +909,7 @@ fn test_read_sfen_with_extended_test_end_play_is_max() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_game_result_is_win() {
+fn test_yaneuraou_read_sfen_with_extended_test_game_result_is_win() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -939,7 +938,7 @@ fn test_read_sfen_with_extended_test_game_result_is_win() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_game_result_is_lose() {
+fn test_yaneuraou_read_sfen_with_extended_test_game_result_is_lose() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -968,7 +967,7 @@ fn test_read_sfen_with_extended_test_game_result_is_lose() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_game_result_is_draw() {
+fn test_yaneuraou_read_sfen_with_extended_test_game_result_is_draw() {
     let mut reader = PackedSfenReader::new();
 
     let input:Vec<u8> = vec![
@@ -997,7 +996,7 @@ fn test_read_sfen_with_extended_test_game_result_is_draw() {
 }
 
 #[test]
-fn test_read_sfen_with_extended_test_buffer_size_incorrect() {
+fn test_yaneuraou_read_sfen_with_extended_test_buffer_size_incorrect() {
     let mut reader = PackedSfenReader::new();
 
     let inputs = vec![
