@@ -155,8 +155,8 @@ impl traits::Reader<ExtendFields> for HcpeReader {
 
             banmen.0[y][x] = KomaKind::GOu;
 
-            for y in 0..9 {
-                for x in 0..9 {
+            for x in 0..9 {
+                for y in 0..9 {
                     if banmen.0[y][x] == KomaKind::SOu || banmen.0[y][x] == KomaKind::GOu {
                         continue;
                     }
