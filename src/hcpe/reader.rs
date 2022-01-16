@@ -45,13 +45,17 @@ impl traits::TryFrom<u16> for BestMove {
                 if from > 80 {
                     let index = from - DROP_FROM_ORIGN;
 
-                    if index < 1 || index > 7 {
+                    if index >= 7 {
                         return Err(ReadError::InvalidFormat(String::from("piece kind is invalid.")))
                     }
 
-                    let kind = MOCHIGOMA_MAP[index as usize - 1];
+                    let kind = MOCHIGOMA_MAP[index as usize];
 
                     let sq = v & 0x7f;
+
+                    if sq > 80 {
+                        return Err(ReadError::InvalidFormat(String::from("move put position is invalid.")))
+                    }
 
                     let x = sq / 9;
                     let y = sq - 9 * x;
@@ -61,10 +65,19 @@ impl traits::TryFrom<u16> for BestMove {
                     let n = v & MOVE_PROMOTE != 0;
 
                     let sq = from;
+
+                    if sq > 80 {
+                        return Err(ReadError::InvalidFormat(String::from("move from position is invalid.")))
+                    }
+
                     let sx = sq / 9;
                     let sy = sq - 9 * sx;
 
                     let sq = v & 0x7f;
+
+                    if sq > 80 {
+                        return Err(ReadError::InvalidFormat(String::from("move to position is invalid.")))
+                    }
 
                     let dx = sq / 9;
                     let dy = sq - 9 * dx;

@@ -55,6 +55,10 @@ impl traits::TryFrom<u16> for BestMove {
 
                     let sq = v & 0x7f;
 
+                    if sq > 80 {
+                        return Err(ReadError::InvalidFormat(String::from("move put position is invalid.")))
+                    }
+
                     let x = sq / 9;
                     let y = sq - 9 * x;
 
@@ -63,10 +67,19 @@ impl traits::TryFrom<u16> for BestMove {
                     let n = v & MOVE_PROMOTE != 0;
 
                     let sq = (v >> 7) & 0x7f;
+
+                    if sq > 80 {
+                        return Err(ReadError::InvalidFormat(String::from("move from position is invalid.")))
+                    }
+
                     let sx = sq / 9;
                     let sy = sq - 9 * sx;
 
                     let sq = v & 0x7f;
+
+                    if sq > 80 {
+                        return Err(ReadError::InvalidFormat(String::from("move to position is invalid.")))
+                    }
 
                     let dx = sq / 9;
                     let dy = sq - 9 * dx;
