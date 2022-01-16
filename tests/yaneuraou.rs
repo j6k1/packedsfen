@@ -874,6 +874,38 @@ fn test_yaneuraou_read_sfen_with_extended_test_bestmove_drop_outofrange() {
 }
 
 #[test]
+fn test_yaneuraou_read_sfen_with_extended_test_bestmove_non_drop_outofrange() {
+    let mut reader = PackedSfenReader::new();
+
+    let inputs:Vec<Vec<u8>> = vec![
+        vec![
+            0b0101100_0,0b1_0100100,0b01_0_10001,0b001_0_0_0_10,0b000011_0_0,0b11_101011,
+            0b01_101111,0b001_0_0_0_10,0b0011111_0,0b1_001011_0,0b01_0_10011,0b001_0_0_0_10,
+            0b000111_0_0,0b1_0_101111,0b01_0_0_0_100,0b01111_0_00,0b0_0_1001_0_0,0b11_0_0001_0,
+            0b001_0_1011,0b0001_0_0_0_1,0b1_001111_0,0b01_0_10011,0b001_0_0_0_10,0b000111_0_0,
+            0b11_101011,0b01_100111,0b001_0_0_0_10,0b0111111_0,0b1_001011_0,0b01_0_10001,
+            0b001_0_0_0_10,0b000011_0_0,
+            0b11111111,0b11111111,0b10000000,0b00101000,0,0,1,0
+        ],
+        vec![
+            0b0101100_0,0b1_0100100,0b01_0_10001,0b001_0_0_0_10,0b000011_0_0,0b11_101011,
+            0b01_101111,0b001_0_0_0_10,0b0011111_0,0b1_001011_0,0b01_0_10011,0b001_0_0_0_10,
+            0b000111_0_0,0b1_0_101111,0b01_0_0_0_100,0b01111_0_00,0b0_0_1001_0_0,0b11_0_0001_0,
+            0b001_0_1011,0b0001_0_0_0_1,0b1_001111_0,0b01_0_10011,0b001_0_0_0_10,0b000111_0_0,
+            0b11_101011,0b01_100111,0b001_0_0_0_10,0b0111111_0,0b1_001011_0,0b01_0_10001,
+            0b001_0_0_0_10,0b000011_0_0,
+            0b11111111,0b11111111,0b01010001,0b00000000,0,0,1,0
+        ],
+    ];
+
+    for (input,&err) in inputs.into_iter().zip(&["move from position invalid.","move to position invalid."]) {
+        let r = reader.read_sfen_with_extended(input);
+
+        assert_eq!(r, Err(ReadError::InvalidFormat(String::from(err))));
+    }
+}
+
+#[test]
 fn test_yaneuraou_read_sfen_with_extended_test_end_play_is_min() {
     let mut reader = PackedSfenReader::new();
 

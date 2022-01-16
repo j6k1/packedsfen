@@ -41,7 +41,7 @@ use packedsfen::hcpe::haffman_code::ExtendFields;
 use packedsfen::error::ReadError;
 
 #[test]
-fn test_hcped_read_sfen_teban_sente_initial_position() {
+fn test_hcpe_read_sfen_teban_sente_initial_position() {
     let mut reader = HcpeReader::new();
 
     let input:[u8; 32] = [
@@ -60,7 +60,7 @@ fn test_hcped_read_sfen_teban_sente_initial_position() {
 }
 
 #[test]
-fn test_hcped_read_sfen_teban_gote_initial_position() {
+fn test_hcpe_read_sfen_teban_gote_initial_position() {
     let mut reader = HcpeReader::new();
 
     let input:[u8; 32] = [
@@ -79,7 +79,7 @@ fn test_hcped_read_sfen_teban_gote_initial_position() {
 }
 
 #[test]
-fn test_hcped_read_sfen_teban_sente_sente_hisha_kaku_nari_and_one_nari() {
+fn test_hcpe_read_sfen_teban_sente_sente_hisha_kaku_nari_and_one_nari() {
     let mut reader = HcpeReader::new();
 
     let input:[u8; 32] = [
@@ -109,7 +109,7 @@ fn test_hcped_read_sfen_teban_sente_sente_hisha_kaku_nari_and_one_nari() {
 
 
 #[test]
-fn test_hcped_read_sfen_teban_gote_sente_hisha_kaku_nari_and_one_nari() {
+fn test_hcpe_read_sfen_teban_gote_sente_hisha_kaku_nari_and_one_nari() {
     let mut reader = HcpeReader::new();
 
     let input:[u8; 32] = [
@@ -138,7 +138,7 @@ fn test_hcped_read_sfen_teban_gote_sente_hisha_kaku_nari_and_one_nari() {
 }
 
 #[test]
-fn test_hcped_read_sfen_teban_sente_mochigoma_half() {
+fn test_hcpe_read_sfen_teban_sente_mochigoma_half() {
     let mut reader = HcpeReader::new();
 
     let input:[u8; 32] = [
@@ -178,7 +178,7 @@ fn test_hcped_read_sfen_teban_sente_mochigoma_half() {
 }
 
 #[test]
-fn test_hcped_read_sfen_teban_gote_mochigoma_half() {
+fn test_hcpe_read_sfen_teban_gote_mochigoma_half() {
     let mut reader = HcpeReader::new();
 
     let input:[u8; 32] = [
@@ -220,7 +220,7 @@ fn test_hcped_read_sfen_teban_gote_mochigoma_half() {
 }
 
 #[test]
-fn test_hcped_read_sfen_teban_sente_mochigoma_full() {
+fn test_hcpe_read_sfen_teban_sente_mochigoma_full() {
     let mut reader = HcpeReader::new();
 
     let input:[u8; 32] = [
@@ -266,7 +266,7 @@ fn test_hcped_read_sfen_teban_sente_mochigoma_full() {
 }
 
 #[test]
-fn test_hcped_read_sfen_teban_gote_mochigoma_full() {
+fn test_hcpe_read_sfen_teban_gote_mochigoma_full() {
     let mut reader = HcpeReader::new();
 
     let input:[u8; 32] = [
@@ -312,7 +312,7 @@ fn test_hcped_read_sfen_teban_gote_mochigoma_full() {
 }
 
 #[test]
-fn test_hcped_read_sfen_teban_sente_mochigoma_half_and_half() {
+fn test_hcpe_read_sfen_teban_sente_mochigoma_half_and_half() {
     let mut reader = HcpeReader::new();
 
     let input:[u8; 32] = [
@@ -366,7 +366,7 @@ fn test_hcped_read_sfen_teban_sente_mochigoma_half_and_half() {
 }
 
 #[test]
-fn test_hcped_read_sfen_teban_gote_mochigoma_half_and_half() {
+fn test_hcpe_read_sfen_teban_gote_mochigoma_half_and_half() {
     let mut reader = HcpeReader::new();
 
     let input:[u8; 32] = [
@@ -420,7 +420,7 @@ fn test_hcped_read_sfen_teban_gote_mochigoma_half_and_half() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_score_value_is_min() {
+fn test_hcpe_read_sfen_with_extended_test_score_value_is_min() {
     let mut reader = HcpeReader::new();
 
     let input:Vec<u8> = vec![
@@ -447,7 +447,7 @@ fn test_hcped_read_sfen_with_extended_test_score_value_is_min() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_score_value_is_max() {
+fn test_hcpe_read_sfen_with_extended_test_score_value_is_max() {
     let mut reader = HcpeReader::new();
 
     let input:Vec<u8> = vec![
@@ -474,7 +474,7 @@ fn test_hcped_read_sfen_with_extended_test_score_value_is_max() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_bestmove_none() {
+fn test_hcpe_read_sfen_with_extended_test_bestmove_none() {
     let mut reader = HcpeReader::new();
 
     let input:Vec<u8> = vec![
@@ -501,7 +501,7 @@ fn test_hcped_read_sfen_with_extended_test_bestmove_none() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_bestmove_null() {
+fn test_hcpe_read_sfen_with_extended_test_bestmove_null() {
     let mut reader = HcpeReader::new();
 
     let input:Vec<u8> = vec![
@@ -527,7 +527,7 @@ fn test_hcped_read_sfen_with_extended_test_bestmove_null() {
     assert_eq!(game_result,GameResult::SenteWin);
 }
 #[test]
-fn test_hcped_read_sfen_with_extended_test_bestmove_non_drop_non_promote() {
+fn test_hcpe_read_sfen_with_extended_test_bestmove_non_drop_non_promote() {
     let mut reader = HcpeReader::new();
 
     let inputs:Vec<Vec<u8>> = vec![
@@ -589,7 +589,7 @@ fn test_hcped_read_sfen_with_extended_test_bestmove_non_drop_non_promote() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_bestmove_non_drop_promote() {
+fn test_hcpe_read_sfen_with_extended_test_bestmove_non_drop_promote() {
     let mut reader = HcpeReader::new();
 
     let inputs:Vec<Vec<u8>> = vec![
@@ -651,7 +651,7 @@ fn test_hcped_read_sfen_with_extended_test_bestmove_non_drop_promote() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_bestmove_drop() {
+fn test_hcpe_read_sfen_with_extended_test_bestmove_drop() {
     let mut reader = HcpeReader::new();
 
     let inputs:Vec<Vec<u8>> = vec![
@@ -740,7 +740,7 @@ fn test_hcped_read_sfen_with_extended_test_bestmove_drop() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_bestmove_drop_outofrange() {
+fn test_hcpe_read_sfen_with_extended_test_bestmove_drop_outofrange() {
     let mut reader = HcpeReader::new();
 
     let inputs:Vec<Vec<u8>> = vec![
@@ -764,7 +764,7 @@ fn test_hcped_read_sfen_with_extended_test_bestmove_drop_outofrange() {
 
     let answer = ["piece kind is invalid.","move put position is invalid."];
 
-    for (input,&err) in inputs.into_iter().zip(answer.into_iter()) {
+    for (input,&err) in inputs.into_iter().zip(&answer) {
         let r = reader.read_sfen_with_extended(input);
 
         assert_eq!(r, Err(ReadError::InvalidFormat(String::from(err))));
@@ -772,7 +772,25 @@ fn test_hcped_read_sfen_with_extended_test_bestmove_drop_outofrange() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_game_result_is_sente_win() {
+fn test_hcpe_read_sfen_with_extended_test_bestmove_non_drop_outofrange() {
+    let mut reader = HcpeReader::new();
+
+    let input:Vec<u8> = vec![
+        0b0101100_0,0b1_0100100,0b01_0_01001,0b001_0_0_0_01,0b000011_0_0,0b11_010111,0b01_011111,
+        0b001_0_0_0_01,0b0011111_0,0b1_000111_0,0b01_0_01101,0b001_0_0_0_01,0b001011_0_0,
+        0b1_0_101111,0b01_0_0_0_010,0b01111_0_00,0b0_0_0101_0_0,0b11_0_0001_0,0b101_0_1011,
+        0b0001_0_0_0_0,0b1_001111_0,0b01_0_01101,0b001_0_0_0_01,0b001011_0_0,0b11_010111,
+        0b01_010111,0b001_0_0_0_01,0b0111111_0,0b1_000111_0,0b01_0_01001,0b001_0_0_0_01,0b000011_0_0,
+        0b11111111,0b01010001,0b01010001,0b00000000,1,0
+    ];
+
+    let r = reader.read_sfen_with_extended(input);
+
+    assert_eq!(r, Err(ReadError::InvalidFormat(String::from("move to position is invalid."))));
+}
+
+#[test]
+fn test_hcpe_read_sfen_with_extended_test_game_result_is_sente_win() {
     let mut reader = HcpeReader::new();
 
     let input:Vec<u8> = vec![
@@ -799,7 +817,7 @@ fn test_hcped_read_sfen_with_extended_test_game_result_is_sente_win() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_game_result_is_gote_win() {
+fn test_hcpe_read_sfen_with_extended_test_game_result_is_gote_win() {
     let mut reader = HcpeReader::new();
 
     let input:Vec<u8> = vec![
@@ -826,7 +844,7 @@ fn test_hcped_read_sfen_with_extended_test_game_result_is_gote_win() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_game_result_is_draw() {
+fn test_hcpe_read_sfen_with_extended_test_game_result_is_draw() {
     let mut reader = HcpeReader::new();
 
     let input:Vec<u8> = vec![
@@ -853,7 +871,7 @@ fn test_hcped_read_sfen_with_extended_test_game_result_is_draw() {
 }
 
 #[test]
-fn test_hcped_read_sfen_with_extended_test_buffer_size_incorrect() {
+fn test_hcpe_read_sfen_with_extended_test_buffer_size_incorrect() {
     let mut reader = HcpeReader::new();
 
     let inputs = vec![
