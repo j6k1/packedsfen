@@ -863,13 +863,26 @@ fn test_yaneuraou_read_sfen_with_extended_test_bestmove_drop_outofrange() {
             0b11_101011,0b01_100111,0b001_0_0_0_10,0b0111111_0,0b1_001011_0,0b01_0_10001,
             0b001_0_0_0_10,0b000011_0_0,
             0b11111111,0b11111111,0b00001000,0b01000100,0,0,1,0
+        ],
+        vec![
+            0b0101100_0,0b1_0100100,0b01_0_10001,0b001_0_0_0_10,0b000011_0_0,0b11_101011,
+            0b01_101111,0b001_0_0_0_10,0b0011111_0,0b1_001011_0,0b01_0_10011,0b001_0_0_0_10,
+            0b000111_0_0,0b1_0_101111,0b01_0_0_0_100,0b01111_0_00,0b0_0_1001_0_0,0b11_0_0001_0,
+            0b001_0_1011,0b0001_0_0_0_1,0b1_001111_0,0b01_0_10011,0b001_0_0_0_10,0b000111_0_0,
+            0b11_101011,0b01_100111,0b001_0_0_0_10,0b0111111_0,0b1_001011_0,0b01_0_10001,
+            0b001_0_0_0_10,0b000011_0_0,
+            0b11111111,0b11111111,0b10000001,0b01101000,0,0,1,0
         ]
     ];
 
-    for input in inputs.into_iter() {
+    for (input,&err) in inputs.into_iter().zip(&[
+        "piece kind is invalid.",
+        "piece kind is invalid.",
+        "move put position is invalid."
+    ]) {
         let r = reader.read_sfen_with_extended(input);
 
-        assert_eq!(r, Err(ReadError::InvalidFormat(String::from("piece kind is invalid."))));
+        assert_eq!(r, Err(ReadError::InvalidFormat(String::from(err))));
     }
 }
 
