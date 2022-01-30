@@ -7,7 +7,6 @@ use super::super::traits;
 use super::haffman_code::ExtendFields;
 use crate::yaneuraou::haffman_code::{HuffmanCode, PackedSfenWithExtended, PackedSfen};
 use crate::traits::TryFrom;
-use std::collections::HashMap;
 
 const MOVE_NONE:u16 = 0;
 const MOVE_NULL:u16 = (1 << 7) + 1;
@@ -56,21 +55,34 @@ impl traits::TryFrom<u16> for BestMove {
 
                     let sq = v & 0x7f;
 
-                    let y = sq / 9;
-                    let x = sq - 9 * y;
+                    if sq > 80 {
+                        return Err(ReadError::InvalidFormat(String::from("move put position is invalid.")))
+                    }
+
+                    let x = sq / 9;
+                    let y = sq - 9 * x;
 
                     BestMove::MovePut(kind, x as u32, y as u32)
                 } else {
                     let n = v & MOVE_PROMOTE != 0;
 
                     let sq = (v >> 7) & 0x7f;
-                    let sy = sq / 9;
-                    let sx = sq - 9 * sy;
+
+                    if sq > 80 {
+                        return Err(ReadError::InvalidFormat(String::from("move from position is invalid.")))
+                    }
+
+                    let sx = sq / 9;
+                    let sy = sq - 9 * sx;
 
                     let sq = v & 0x7f;
 
-                    let dy = sq / 9;
-                    let dx = sq - 9 * dy;
+                    if sq > 80 {
+                        return Err(ReadError::InvalidFormat(String::from("move to position is invalid.")))
+                    }
+
+                    let dx = sq / 9;
+                    let dy = sq - 9 * dx;
 
                     BestMove::MoveTo(sx as u32, sy as u32, dx as u32, dy as u32, n)
                 }
@@ -144,8 +156,8 @@ impl traits::Reader<ExtendFields> for PackedSfenReader {
             let mut bs = BitStreamReader::new(buf);
 
             let mut banmen = Banmen([[KomaKind::Blank; 9]; 9]);
-            let mut ms:HashMap<MochigomaKind,u32> = HashMap::new();
-            let mut mg:HashMap<MochigomaKind,u32> = HashMap::new();
+            let mut ms:Mochigoma = Mochigoma::new();
+            let mut mg:Mochigoma = Mochigoma::new();
 
             let teban = if bs.get_bit_from_lsb()? == 0 {
                 Teban::Sente
@@ -154,19 +166,29 @@ impl traits::Reader<ExtendFields> for PackedSfenReader {
             };
 
             let sq = bs.get_bits_from_lsb(7)? as u32;
-            let y = sq as usize / 9;
-            let x = sq as usize - 9 * y;
+
+            if sq > 80 {
+                return Err(ReadError::InvalidFormat(String::from("sente ou position is out of range.")));
+            }
+
+            let x = sq as usize / 9;
+            let y = sq as usize - 9 * x;
 
             banmen.0[y][x] = KomaKind::SOu;
 
             let sq = bs.get_bits_from_lsb(7)? as u32;
-            let y = sq as usize / 9;
-            let x = sq as usize - 9 * y;
+
+            if sq > 80 {
+                return Err(ReadError::InvalidFormat(String::from("gote ou position is out of range.")));
+            }
+
+            let x = sq as usize / 9;
+            let y = sq as usize - 9 * x;
 
             banmen.0[y][x] = KomaKind::GOu;
 
-            for y in 0..9 {
-                for x in 0..9 {
+            for x in 0..9 {
+                for y in 0..9 {
                     if banmen.0[y][x] == KomaKind::SOu || banmen.0[y][x] == KomaKind::GOu {
                         continue;
                     }
@@ -237,13 +259,9 @@ impl traits::Reader<ExtendFields> for PackedSfenReader {
                             let kind = MochigomaKind::try_from(&hc)?;
 
                             if teban == Teban::Sente {
-                                let c = ms.get(&kind).map(|&k| k).unwrap_or(0);
-
-                                ms.insert(kind,c+1);
+                                ms.put(kind);
                             } else {
-                                let c = mg.get(&kind).map(|&k| k).unwrap_or(0);
-
-                                mg.insert(kind,c+1);
+                                mg.put(kind);
                             }
                             break;
                         },

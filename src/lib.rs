@@ -1,6 +1,7 @@
 pub mod traits;
 pub mod error;
 pub mod yaneuraou;
+pub mod hcpe;
 
 use error::*;
 
