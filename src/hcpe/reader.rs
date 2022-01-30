@@ -157,12 +157,22 @@ impl traits::Reader<ExtendFields> for HcpeReader {
             };
 
             let sq = bs.get_bits_from_lsb(7)? as u32;
+
+            if sq > 80 {
+                return Err(ReadError::InvalidFormat(String::from("sente ou position is out of range.")));
+            }
+
             let x = sq as usize / 9;
             let y = sq as usize - 9 * x;
 
             banmen.0[y][x] = KomaKind::SOu;
 
             let sq = bs.get_bits_from_lsb(7)? as u32;
+
+            if sq > 80 {
+                return Err(ReadError::InvalidFormat(String::from("gote ou position is out of range.")));
+            }
+
             let x = sq as usize / 9;
             let y = sq as usize - 9 * x;
 

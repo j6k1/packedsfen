@@ -138,6 +138,36 @@ fn test_hcpe_read_sfen_teban_gote_sente_hisha_kaku_nari_and_one_nari() {
 }
 
 #[test]
+fn test_hcpe_read_sfen_teban_sente_ou_position_outofrange() {
+    let mut reader = HcpeReader::new();
+
+    let input:[u8; 32] = [
+        0b1010001_0,0b1_0100100,0b01_0_01001,0b001_0_0_0_01,0b000011_0_0,0b11_010111,0b01_011111,
+        0b001_0_0_0_01,0b0011111_0,0b1_000111_0,0b01_0_01101,0b001_0_0_0_01,0b001011_0_0,
+        0b1_0_101111,0b01_0_0_0_010,0b01111_0_00,0b0_0_0101_0_0,0b11_0_0001_0,0b101_0_1011,
+        0b0001_0_0_0_0,0b1_001111_0,0b01_0_01101,0b001_0_0_0_01,0b001011_0_0,0b11_010111,
+        0b01_010111,0b001_0_0_0_01,0b0111111_0,0b1_000111_0,0b01_0_01001,0b001_0_0_0_01,0b000011_0_0
+    ];
+
+    assert_eq!(Err(ReadError::InvalidFormat(String::from("sente ou position is out of range."))),reader.read_sfen(&input));
+}
+
+#[test]
+fn test_hcpe_read_sfen_teban_gote_ou_position_outofrange() {
+    let mut reader = HcpeReader::new();
+
+    let input:[u8; 32] = [
+        0b0101100_1,0b1_1010001,0b01_0_01001,0b001_0_0_0_01,0b000011_0_0,0b11_010111,0b01_011111,
+        0b001_0_0_0_01,0b0011111_0,0b1_000111_0,0b01_0_01101,0b001_0_0_0_01,0b001011_0_0,0b1_0_101111,
+        0b01_0_0_0_010,0b01111_0_00,0b0_0_0101_0_0,0b11_0_0001_0,0b101_0_1011,0b0001_0_0_0_0,0b1_001111_0,
+        0b01_0_01101,0b001_0_0_0_01,0b001011_0_0,0b11_010111,0b01_010111,0b001_0_0_0_01,0b0111111_0,
+        0b1_000111_0,0b01_0_01001,0b001_0_0_0_01,0b000011_0_0
+    ];
+
+    assert_eq!(Err(ReadError::InvalidFormat(String::from("gote ou position is out of range."))),reader.read_sfen(&input));
+}
+
+#[test]
 fn test_hcpe_read_sfen_teban_sente_mochigoma_half() {
     let mut reader = HcpeReader::new();
 
