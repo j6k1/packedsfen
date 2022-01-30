@@ -871,7 +871,7 @@ fn test_yaneuraou_read_sfen_with_extended_test_bestmove_drop_outofrange() {
             0b001_0_1011,0b0001_0_0_0_1,0b1_001111_0,0b01_0_10011,0b001_0_0_0_10,0b000111_0_0,
             0b11_101011,0b01_100111,0b001_0_0_0_10,0b0111111_0,0b1_001011_0,0b01_0_10001,
             0b001_0_0_0_10,0b000011_0_0,
-            0b11111111,0b11111111,0b10000001,0b01101000,0,0,1,0
+            0b11111111,0b11111111,0b11010001,0b01000000,0,0,1,0
         ]
     ];
 
@@ -911,7 +911,7 @@ fn test_yaneuraou_read_sfen_with_extended_test_bestmove_non_drop_outofrange() {
         ],
     ];
 
-    for (input,&err) in inputs.into_iter().zip(&["move from position invalid.","move to position invalid."]) {
+    for (input,&err) in inputs.into_iter().zip(&["move from position is invalid.","move to position is invalid."]) {
         let r = reader.read_sfen_with_extended(input);
 
         assert_eq!(r, Err(ReadError::InvalidFormat(String::from(err))));
