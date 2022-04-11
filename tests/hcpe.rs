@@ -548,6 +548,33 @@ fn test_hcpe_read_sfen_with_extended_test_bestmove_null() {
     assert_eq!(best_move,BestMove::Null);
     assert_eq!(game_result,GameResult::SenteWin);
 }
+
+#[test]
+fn test_hcpe_read_sfen_with_extended_test_bestmove_pvs_end() {
+    let mut reader = HcpeReader::new();
+
+    let input:Vec<u8> = vec![
+        0b0101100_0,0b1_0100100,0b01_0_01001,0b001_0_0_0_01,0b000011_0_0,0b11_010111,0b01_011111,
+        0b001_0_0_0_01,0b0011111_0,0b1_000111_0,0b01_0_01101,0b001_0_0_0_01,0b001011_0_0,
+        0b1_0_101111,0b01_0_0_0_010,0b01111_0_00,0b0_0_0101_0_0,0b11_0_0001_0,0b101_0_1011,
+        0b0001_0_0_0_0,0b1_001111_0,0b01_0_01101,0b001_0_0_0_01,0b001011_0_0,0b11_010111,
+        0b01_010111,0b001_0_0_0_01,0b0111111_0,0b1_000111_0,0b01_0_01001,0b001_0_0_0_01,0b000011_0_0,
+        0b11111111,0b11111111,0,(1 << 7),1,0
+    ];
+
+    let ((teban,banmen,mc),ExtendFields {
+        eval,
+        best_move,
+        game_result
+    }) = reader.read_sfen_with_extended(input).unwrap();
+
+    assert_eq!(teban,Teban::Sente);
+    assert_eq!(banmen,BANMEN_START_POS);
+    assert_eq!(mc,MochigomaCollections::Pair(Mochigoma::new(),Mochigoma::new()));
+    assert_eq!(eval,-1);
+    assert_eq!(best_move,BestMove::MovePVsEnd);
+    assert_eq!(game_result,GameResult::SenteWin);
+}
 #[test]
 fn test_hcpe_read_sfen_with_extended_test_bestmove_non_drop_non_promote() {
     let mut reader = HcpeReader::new();
