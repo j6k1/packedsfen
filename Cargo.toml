@@ -2,6 +2,8 @@
 name = "packedsfen"
 version = "0.3.0"
 authors = ["jinpu <nanasi18@gmail.com>"]
+edition = "2018"
+
 description = "packedsfen is a library for processing Huffman-encoded supervised phases for Shogi AI."
 documentation = "https://docs.rs/packedsfen"
 homepage = "https://crates.io/crates/packedsfen"
