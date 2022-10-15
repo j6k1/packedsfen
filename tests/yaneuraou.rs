@@ -1111,9 +1111,9 @@ fn test_yaneuraou_read_sfen_with_extended_test_buffer_size_incorrect() {
     ];
 
 
-    for input in inputs.into_iter() {
+    for (input,s) in inputs.into_iter().zip(vec![41,39]) {
         let r = reader.read_sfen_with_extended(input);
 
-        assert_eq!(r, Err(ReadError::InvalidFormat(String::from("input size is incorrect."))));
+        assert_eq!(r, Err(ReadError::InvalidFormat(format!("input size is incorrect. actual size = {}",s))));
     }
 }
