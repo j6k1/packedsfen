@@ -100,7 +100,7 @@ impl PackedSfenReader {
 
     fn read_raw_sfen_with_extended(&mut self, buf:Vec<u8>) -> Result<PackedSfenWithExtended,ReadError> {
         if buf.len() != 40 {
-            Err(ReadError::InvalidFormat(String::from("input size is incorrect.")))
+            Err(ReadError::InvalidFormat(format!("input size is incorrect. actual size = {}",buf.len())))
         } else {
             let mut buf = buf;
             let remained = buf.split_off(32);
@@ -151,7 +151,7 @@ impl PackedSfenReader {
 impl traits::Reader<ExtendFields> for PackedSfenReader {
     fn read_sfen(&mut self, buf:&[u8]) -> Result<(Teban,Banmen,MochigomaCollections),ReadError> {
         if buf.len() != 32 {
-            Err(ReadError::InvalidFormat(String::from("input size is incorrect.")))
+            Err(ReadError::InvalidFormat(format!("input size is incorrect. actual size = {}",buf.len())))
         } else {
             let mut bs = BitStreamReader::new(buf);
 
