@@ -17,5 +17,5 @@ license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
-usiagent = "0.6.8"
+[dependencies.usiagent]
+path = "../USIAgent"
