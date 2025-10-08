@@ -109,7 +109,7 @@ impl HcpeReader {
 
             let remained = buf.split_off(2);
 
-            let score_value:i16 = buf[0] as i16 | (buf[1] as i16) << 8;
+            let score_value:i16 = i16::from_le_bytes([buf[0], buf[1]]);
 
             let mut buf = remained;
 
